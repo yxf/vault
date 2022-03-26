@@ -1,17 +1,4 @@
-# Solidity Template
-
-My favorite setup for writing Solidity smart contracts.
-
-- [Hardhat](https://github.com/nomiclabs/hardhat): compile and run the smart contracts on a local development network
-- [TypeChain](https://github.com/ethereum-ts/TypeChain): generate TypeScript types for smart contracts
-- [Ethers](https://github.com/ethers-io/ethers.js/): renowned Ethereum library and wallet implementation
-- [Waffle](https://github.com/EthWorks/Waffle): tooling for writing comprehensive smart contract tests
-- [Solhint](https://github.com/protofire/solhint): linter
-- [Solcover](https://github.com/sc-forks/solidity-coverage): code coverage
-- [Prettier Plugin Solidity](https://github.com/prettier-solidity/prettier-plugin-solidity): code formatter
-
-This is a GitHub template, which means you can reuse it as many times as you want. You can do that by clicking the "Use this
-template" button at the top of the page.
+# Vault
 
 ## Usage
 
@@ -92,23 +79,56 @@ $ yarn clean
 
 ### Deploy
 
-Deploy the contracts to Hardhat Network:
+Deploy the contracts to rinkeby network:
 
 ```sh
-$ yarn deploy --greeting "Bonjour, le monde!"
+$ yarn deploy --manager address --network rinkeby
 ```
 
-## Syntax Highlighting
+### Deployed contracts on rinkeby
 
-If you use VSCode, you can enjoy syntax highlighting for your Solidity code via the
-[vscode-solidity](https://github.com/juanfranblanco/vscode-solidity) extension. The recommended approach to set the
-compiler version is to add the following fields to your VSCode user settings:
+- Vault: [0x241C192c369a48Ea7F704682C17DC94927557609](https://rinkeby.etherscan.io/address/0x241C192c369a48Ea7F704682C17DC94927557609)
 
-```json
-{
-  "solidity.compileUsingRemoteVersion": "v0.8.13+commit.abaa5c0e",
-  "solidity.defaultCompiler": "remote"
-}
-```
+- MockToken: [0xA7A0185Ed13D5148d2ff0D83066EdEAD1aa77d34](https://rinkeby.etherscan.io/address/0xA7A0185Ed13D5148d2ff0D83066EdEAD1aa77d34)
 
-Where `v0.8.13+commit.abaa5c0e` can be replaced with your version of choice.
+- MockStrategy: [0x4EE1452d38dd0348Db113A5Bef4736EA22939C7E](https://rinkeby.etherscan.io/address/0x4EE1452d38dd0348Db113A5Bef4736EA22939C7E)
+
+- MockEtherStrategy: [0xB27ECDd4Bf478d5DF10555e6B04597c364f178FF](https://rinkeby.etherscan.io/address/0xB27ECDd4Bf478d5DF10555e6B04597c364f178FF)
+
+After deployed all contracts. You should call `Vault#setStrategy(token, strategy)` to update investment strategy for ETH and token
+
+### How to test
+
+If you want to test invest function, you should set strategy `setStrategy(token, strategy)`.
+
+#### ETH vault
+
+Basic functions
+
+token = 0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE
+
+- Call `Vault#deposit(address token, uint amount)` to put in some ether to vault
+- Call `Vault#withdraw(address token, uint shares)` to withdraw some ether
+
+Extra functions
+
+- Call `Vault#deposit(address token, uint amount)` to put in some ether to vault
+- Call `Vault#invest(address token)` to invest funds using manager wallet
+- Call `MockEtherStrategy#decrease(uint amount)` to simulate invest loss or send some ether to `MockEtherStrategy` to simulate invest gains
+- Call `Vault#withdraw(address token, uint shares)` to withdraw your ether
+
+#### Token vault
+
+Basic functions
+
+- Call `MockToken#mint(address to, uint amount)` to mint some tokens for test
+- Call `Vault#deposit(address token, uint amount)` to put in some tokens to vault
+- Call `Vault#withdraw(address token, uint shares)` to withdraw some tokens
+
+Extra functions
+
+- Call `Vault#deposit(address token, uint amount)` to put in some tokens to vault
+- Call `Vault#invest(address token)` to invest funds using manager wallet
+- Call `MockEtherStrategy#decrease(uint amount)` to simulate invest loss or send some tokens to `MockStrategy` to simulate invest gains
+- Call `Vault#balanceOf(address user, address token)` to check your loss or gains
+- Call `Vault#withdraw(address token, uint shares)` to check your tokens

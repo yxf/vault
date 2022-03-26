@@ -1,11 +1,7 @@
 {
-  "name": "@prb/solidity-template",
-  "description": "Template for writing Solidity smart contracts",
+  "name": "vault",
+  "description": "Simple Vault",
   "version": "1.0.0",
-  "author": {
-    "name": "Paul Razvan Berg",
-    "url": "https://paulrberg.com"
-  },
   "devDependencies": {
     "@codechecks/client": "^0.1.12",
     "@commitlint/cli": "^16.2.1",
@@ -75,7 +71,7 @@
     "commit": "git-cz",
     "compile": "cross-env TS_NODE_TRANSPILE_ONLY=true hardhat compile",
     "coverage": "yarn typechain && hardhat coverage --solcoverjs ./.solcover.js --temp artifacts --testfiles \"test/**/*.ts\" && yarn typechain",
-    "deploy": "hardhat deploy:Greeter",
+    "deploy": "hardhat deploy:Vault",
     "lint": "yarn lint:sol && yarn lint:ts && yarn prettier:check",
     "lint:sol": "solhint --config ./.solhint.json --max-warnings 0 \"contracts/**/*.sol\"",
     "lint:ts": "eslint --config ./.eslintrc.yaml --ignore-path ./.eslintignore --ext .js,.ts .",
@@ -86,5 +82,8 @@
     "prettier:check": "prettier --check --config ./.prettierrc.yaml \"**/*.{js,json,md,sol,ts}\"",
     "test": "hardhat test",
     "typechain": "cross-env TS_NODE_TRANSPILE_ONLY=true hardhat typechain"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.5.0"
   }
 }

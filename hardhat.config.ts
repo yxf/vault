@@ -49,11 +49,7 @@ function getChainConfig(chain: keyof typeof chainIds): NetworkUserConfig {
       jsonRpcUrl = "https://" + chain + ".infura.io/v3/" + infuraApiKey;
   }
   return {
-    accounts: {
-      count: 10,
-      mnemonic,
-      path: "m/44'/60'/0'/0",
-    },
+    accounts: [process.env.PRIVATE_KEY as string],
     chainId: chainIds[chain],
     url: jsonRpcUrl,
   };
@@ -102,7 +98,7 @@ const config: HardhatUserConfig = {
     tests: "./test",
   },
   solidity: {
-    version: "0.8.13",
+    version: "0.8.9",
     settings: {
       metadata: {
         // Not including the metadata hash
